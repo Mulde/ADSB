@@ -248,7 +248,7 @@ I_blur = imfilter(I,Lfilter15,'conv');
 % b subtract the blurred image from the original
 UL = imsubtract(I,I_blur);
 subplot(1,3,2)
-imshow(Umask)
+imshow(UL)
 title("sharpening mask")
 
 k = 5;
