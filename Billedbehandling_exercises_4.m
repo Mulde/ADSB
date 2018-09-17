@@ -199,16 +199,87 @@ title("35x35 Gaussian")
 
 %% exercise 2 
 % image sharpening using the laplacian and unsharp 
+% 1. load the image 
 I = imread('moon.tif');
+figure
+subplot(1,4,1)
 imshow(I)
+title("original")
 I = im2double(I);
+
+% 2 implement the mask used to find the laplacian
 
 alpha1 = [0,1,0;1,-4,1;0,1,0];
 alpha2 = [0,-1,0;-1,5,-1;0,-1,0];
+f = fspecial('laplacian',0);
+
+% 3 sharpen the image by adding the laplacian of the image to the orig
 
 IL1 = imfilter(I,alpha1);
 IL2 = imfilter(I,alpha2);
+IL3 = imfilter(I,f);
 
-figure 
+% 4 show the results
+
+subplot(1,4,2)
+imshow(IL1)
+title("1 rundt om -4")
+
+subplot(1,4,3)
+imshow(IL2)
+title("-1 rundt om 5")
+
+subplot(1,4,4);
+imshow(IL3)
+title("fspecial")
+
+% 5 try sharpening the image using unsharp masking 
+figure
 subplot(1,3,1)
-imshow(IL1+0.5)
+imshow(I)
+title("original")
+% a blurring the image
+% low pass filter for blurring
+Lfilter15 = ones(15)/225;
+% adding the low pass filter to the original
+% also called blurring the original
+I_blur = imfilter(I,Lfilter15,'conv');
+
+% b subtract the blurred image from the original
+UL = imsubtract(I,I_blur);
+subplot(1,3,2)
+imshow(Umask)
+title("sharpening mask")
+
+k = 5;
+% c adding the mask to the original
+IUL = imadd(I,k*UL);
+
+% 6 show the result and try different values of k
+
+subplot(1,3,3)
+imshow(IUL)
+title("sharpened image")
+
+
+%% exercise 3 
+% non linear filtering - the median filter
+
+% implement a 3x3 or 5x5 (or MxM) median filter as a funtion in matlab
+%M = 3;
+% matlab has a median filter function i intend to use 
+I = imread('noisyimage2.tif');
+figure
+subplot(1,2,1)
+imshow(I)
+title("original")
+
+% filtering the image
+% the default of this function is a 3x3
+IM = medfilt2(I);
+imshowpair(I,IM,'montage')
+title("original and filtered image side by side")
+subplot(1,2,2)
+imshow(I3)
+title("3x3 trying to remoce salt and pepper")
+
